@@ -55,7 +55,7 @@ namespace MicroCHAP.Server
 			CleanupExpiredTokens();
 
 			// we now know the challenge was valid. But what about the response?
-			return _responseService.CreateResponse(challenge, url, additionalFactors).Equals(response);
+			return _responseService.CreateSignature(challenge, url, additionalFactors).Equals(response);
 		}
 
 		protected virtual void CleanupExpiredTokens()

@@ -11,6 +11,6 @@ namespace MicroCHAP
 		/// <param name="url">The URL we're requesting</param>
 		/// <param name="signatureFactors">Any additional factors required to authenticate the request (post params, etc); the remote host must look for the same parameters</param>
 		/// <returns></returns>
-		string CreateResponse(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors);
+		string CreateSignature(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors);
 	}
 }

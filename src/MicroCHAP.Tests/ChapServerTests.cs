@@ -63,7 +63,7 @@ namespace MicroCHAP.Tests
 		private IChapServer CreateTestServer()
 		{
 			var responseService = Substitute.For<ISignatureService>();
-			responseService.CreateResponse(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
+			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
 
 			return new ChapServer(responseService);
 		}

@@ -15,7 +15,7 @@ namespace MicroCHAP
 			_sharedSecret = sharedSecret;
 		}
 
-		public string CreateResponse(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors)
+		public string CreateSignature(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors)
 		{
 			if (signatureFactors == null) signatureFactors = Enumerable.Empty<SignatureFactor>();
 
