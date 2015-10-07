@@ -1,0 +1,34 @@
+######## GENERAL IGNORES #######
+
+# ignore logs, OS cache files
+*.log
+ehthumbs.db
+Thumbs.db
+*.old
+
+######## MAC JUNK #######
+.DS_Store*
+._*
+
+######## GENERAL .NET IGNORES ########
+
+# Ignore binaries in the source
+src/*/bin/*
+src/*/obj
+packages
+
+[Bb]uild/*.nupkg
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Roslyn cache directories
+*.ide/
+.vs/
+
+# NuGet packages
+[Pp]ackages/*
+![Pp]ackages/repositories.config

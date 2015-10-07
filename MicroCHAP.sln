@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCHAP", "src\MicroCHAP\MicroCHAP.csproj", "{1C702C4B-F5AE-4E32-A6C6-1EF965168229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCHAP.Tests", "src\MicroCHAP.Tests\MicroCHAP.Tests.csproj", "{5BF8F984-7486-43E0-83E9-31EB71919E1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C702C4B-F5AE-4E32-A6C6-1EF965168229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C702C4B-F5AE-4E32-A6C6-1EF965168229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C702C4B-F5AE-4E32-A6C6-1EF965168229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C702C4B-F5AE-4E32-A6C6-1EF965168229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BF8F984-7486-43E0-83E9-31EB71919E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BF8F984-7486-43E0-83E9-31EB71919E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BF8F984-7486-43E0-83E9-31EB71919E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BF8F984-7486-43E0-83E9-31EB71919E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
