@@ -40,7 +40,7 @@ namespace MicroCHAP.Server
 			SignatureFactor[] factors = null;
 			if (factorParser != null) factors = factorParser(request);
 
-			return ValidateToken(challenge, authorize, request.Url.ToString(), factors);
+			return ValidateToken(challenge, authorize, request.Url.AbsoluteUri, factors);
 		}
 
 		public virtual bool ValidateToken(string challenge, string response, string url, params SignatureFactor[] additionalFactors)
