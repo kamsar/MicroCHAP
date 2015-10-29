@@ -1,17 +1,21 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Web;
 
 namespace MicroCHAP.Server
 {
+	/// <summary>
+	/// Functionalities needed to be a server of CHAP-authenticated data over HTTP.
+	/// Requires a persistent store of challenge values so we can avoid replay attacks.
+	/// </summary>
 	public class ChapServer : IChapServer
 	{
 		private readonly ISignatureService _responseService;
-		private readonly ConcurrentDictionary<string, DateTime> _activeChallenges = new ConcurrentDictionary<string, DateTime>();
+		private readonly IChallengeStore _challengeStore;
 
-		public ChapServer(ISignatureService responseService)
+		public ChapServer(ISignatureService responseService, IChallengeStore challengeStore)
 		{
 			_responseService = responseService;
+			_challengeStore = challengeStore;
 		}
 
 		protected virtual int TokenValidityInMs { get { return 3000; } }
@@ -20,7 +24,7 @@ namespace MicroCHAP.Server
 		{
 			var token = Guid.NewGuid().ToString();
 
-			_activeChallenges.TryAdd(token, DateTime.UtcNow);
+			_challengeStore.AddChallenge(token, TokenValidityInMs);
 
 			return token;
 		}
@@ -45,27 +49,10 @@ namespace MicroCHAP.Server
 
 		public virtual bool ValidateToken(string challenge, string response, string url, params SignatureFactor[] additionalFactors)
 		{
-			DateTime existingChallengeTimestamp;
-
-			// note that we remove the challenge if it exists: you get one shot
-			if (!_activeChallenges.TryRemove(challenge, out existingChallengeTimestamp)) return false; // challenge was unknown
-
-			if ((DateTime.UtcNow - existingChallengeTimestamp).TotalMilliseconds > TokenValidityInMs) return false; // challenge was too old to be used
-
-			CleanupExpiredTokens();
+			if (!_challengeStore.ConsumeChallenge(challenge)) return false; // invalid or expired challenge
 
 			// we now know the challenge was valid. But what about the response?
 			return _responseService.CreateSignature(challenge, url, additionalFactors).Equals(response);
-		}
-
-		protected virtual void CleanupExpiredTokens()
-		{
-			foreach (var challenge in _activeChallenges)
-			{
-				DateTime temp;
-				if ((DateTime.UtcNow - challenge.Value).TotalMilliseconds > TokenValidityInMs)
-					_activeChallenges.TryRemove(challenge.Key, out temp);
-			}
 		}
 	}
 }

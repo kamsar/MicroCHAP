@@ -65,7 +65,7 @@ namespace MicroCHAP.Tests
 			var responseService = Substitute.For<ISignatureService>();
 			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
 
-			return new ChapServer(responseService);
+			return new ChapServer(responseService, new InMemoryChallengeStore());
 		}
 	}
 }

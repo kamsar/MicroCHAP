@@ -76,6 +76,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="InMemoryChallengeStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureServiceTests.cs" />
     <Compile Include="ChapServerTests.cs" />
