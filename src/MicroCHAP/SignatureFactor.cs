@@ -6,8 +6,8 @@ namespace MicroCHAP
 	{
 		public SignatureFactor(string key, string value)
 		{
-			if(key == null) throw new ArgumentNullException("key");
-			if(value == null) throw new ArgumentNullException("value");
+			if(key == null) throw new ArgumentNullException(nameof(key));
+			if(value == null) throw new ArgumentNullException(nameof(value));
 
 			Key = key;
 			Value = value;

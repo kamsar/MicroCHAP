@@ -18,7 +18,7 @@ namespace MicroCHAP.Server
 			_challengeStore = challengeStore;
 		}
 
-		protected virtual int TokenValidityInMs { get { return 3000; } }
+		public int TokenValidityInMs { get; set; } = 600000;
 
 		public virtual string GetChallengeToken()
 		{
