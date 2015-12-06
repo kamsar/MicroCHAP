@@ -29,8 +29,8 @@ namespace MicroCHAP.Client
 			var challenge = GetChallenge();
 			var client = new WebClient();
 
-			client.Headers.Add("Authorization", _responseService.CreateSignature(challenge, url, additionalFactors));
-			client.Headers.Add("X-Nonce", challenge);
+			client.Headers.Add("X-MC-MAC", _responseService.CreateSignature(challenge, url, additionalFactors));
+			client.Headers.Add("X-MC-Nonce", challenge);
 
 			return client;
 		}

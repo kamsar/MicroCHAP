@@ -36,8 +36,10 @@ namespace MicroCHAP.Server
 
 		public virtual bool ValidateRequest(HttpRequestBase request, Func<HttpRequestBase, SignatureFactor[]> factorParser)
 		{
-			var authorize = request.Headers["Authorization"];
-			var challenge = request.Headers["X-Nonce"];
+			// fallback headers are for compatibility with MicroCHAP 1.0 client implementations
+			// See https://github.com/kamsar/MicroCHAP/issues/1 for why the change to different headers
+			var authorize = request.Headers["X-MC-MAC"] ?? request.Headers["Authorization"];
+			var challenge = request.Headers["X-MC-Nonce"] ?? request.Headers["X-Nonce"];
 
 			if (authorize == null || challenge == null) return false;
 
