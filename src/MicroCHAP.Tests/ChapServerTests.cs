@@ -32,6 +32,8 @@ namespace MicroCHAP.Tests
 		{
 			var service = CreateTestServer();
 
+			((ChapServer) service).TokenValidityInMs = 3000;
+
 			var token = service.GetChallengeToken();
 
 			Thread.Sleep(3050);

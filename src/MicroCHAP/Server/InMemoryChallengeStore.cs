@@ -7,6 +7,7 @@ namespace MicroCHAP.Server
 	/// Stores challenges in an in-memory concurrent dictionary.
 	/// Appropriate, when registered as a singleton in IoC, for single server environments.
 	/// For multi-server environments without sticky sessions you'll need to put these somewhere shared.
+	/// Such as a database. Or a shared cache (Redis, etc).
 	/// </summary>
 	public class InMemoryChallengeStore : IChallengeStore
 	{
