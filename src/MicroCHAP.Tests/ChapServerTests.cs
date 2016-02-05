@@ -20,6 +20,16 @@ namespace MicroCHAP.Tests
 		}
 
 		[Fact]
+		public void GetChallengeToken_ShouldBeAlphanumeric()
+		{
+			var service = CreateTestServer();
+
+			var challenge = service.GetChallengeToken();
+
+			challenge.Should().MatchRegex("^[A-Za-z0-9]+$");
+		}
+
+		[Fact]
 		public void ValidateToken_ShouldReturnFalseIfChallengeDoesNotExist()
 		{
 			var service = CreateTestServer();
@@ -36,7 +46,7 @@ namespace MicroCHAP.Tests
 
 			var token = service.GetChallengeToken();
 
-			Thread.Sleep(3050);
+			Thread.Sleep(350);
 
 			service.ValidateToken(token, "RESPONSE", "FAKE").Should().BeFalse();
 		}
@@ -67,7 +77,7 @@ namespace MicroCHAP.Tests
 			var responseService = Substitute.For<ISignatureService>();
 			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
 
-			return new ChapServer(responseService, new InMemoryChallengeStore());
+			return new ChapServer(responseService, new InMemoryChallengeStore()) { TokenValidityInMs = 300 };
 		}
 	}
 }

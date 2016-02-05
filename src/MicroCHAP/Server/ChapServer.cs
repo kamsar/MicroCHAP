@@ -22,7 +22,7 @@ namespace MicroCHAP.Server
 
 		public virtual string GetChallengeToken()
 		{
-			var token = Guid.NewGuid().ToString();
+			var token = Guid.NewGuid().ToString("N");
 
 			_challengeStore.AddChallenge(token, TokenValidityInMs);
 
