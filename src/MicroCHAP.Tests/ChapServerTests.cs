@@ -42,7 +42,7 @@ namespace MicroCHAP.Tests
 		{
 			var service = CreateTestServer();
 
-			((ChapServer) service).TokenValidityInMs = 3000;
+			((ChapServer) service).TokenValidityInMs = 300;
 
 			var token = service.GetChallengeToken();
 
@@ -77,7 +77,7 @@ namespace MicroCHAP.Tests
 			var responseService = Substitute.For<ISignatureService>();
 			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
 
-			return new ChapServer(responseService, new InMemoryChallengeStore()) { TokenValidityInMs = 300 };
+			return new ChapServer(responseService, new InMemoryChallengeStore());
 		}
 	}
 }
