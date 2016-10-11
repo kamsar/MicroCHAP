@@ -50,7 +50,7 @@ namespace MicroCHAP.Tests
 
 		private IChallengeStore CreateTestStore()
 		{
-			return new InMemoryChallengeStore();
+			return new InMemoryChallengeStore(null);
 		}
 	}
 }

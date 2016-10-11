@@ -44,8 +44,11 @@
     <Compile Include="Client\ChapClientServiceBase.cs" />
     <Compile Include="ISignatureService.cs" />
     <Compile Include="Server\IChallengeStore.cs" />
+    <Compile Include="Server\IChallengeStoreLogger.cs" />
     <Compile Include="Server\IChapServer.cs" />
+    <Compile Include="Server\IChapServerLogger.cs" />
     <Compile Include="Server\InMemoryChallengeStore.cs" />
+    <Compile Include="SignatureResult.cs" />
     <Compile Include="SignatureService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ChapServer.cs" />

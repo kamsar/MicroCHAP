@@ -34,7 +34,11 @@ namespace MicroCHAP.Tests
 		{
 			var service = CreateTestServer();
 
-			service.ValidateToken("FAKE", "FAKE", "FAKE").Should().BeFalse();
+			var log = Substitute.For<IChapServerLogger>();
+
+			service.ValidateToken("FAKE", "FAKE", "FAKE", log).Should().BeFalse();
+
+			log.Received().RejectedDueToInvalidChallenge("FAKE", "FAKE");
 		}
 
 		[Fact]
@@ -42,13 +46,16 @@ namespace MicroCHAP.Tests
 		{
 			var service = CreateTestServer();
 
-			((ChapServer) service).TokenValidityInMs = 300;
+			var log = Substitute.For<IChapServerLogger>();
+
+			((ChapServer)service).TokenValidityInMs = 300;
 
 			var token = service.GetChallengeToken();
 
 			Thread.Sleep(350);
 
-			service.ValidateToken(token, "RESPONSE", "FAKE").Should().BeFalse();
+			service.ValidateToken(token, "RESPONSE", "FAKE", log).Should().BeFalse();
+			log.Received().RejectedDueToInvalidChallenge(token, "FAKE");
 		}
 
 		[Fact]
@@ -72,12 +79,26 @@ namespace MicroCHAP.Tests
 			service.ValidateToken(token, "RESPONSE", "FAKE").Should().BeFalse();
 		}
 
+		[Fact]
+		public void ValidateToken_ShouldRejectInvalidSignature()
+		{
+			var service = CreateTestServer();
+
+			var log = Substitute.For<IChapServerLogger>();
+
+			var token = service.GetChallengeToken();
+
+			service.ValidateToken(token, "BADRESPONSE", "FAKE", log).Should().BeFalse();
+			log.Received().RejectedDueToInvalidSignature(token, "BADRESPONSE", Arg.Is<SignatureResult>(result => result.SignatureHash.Equals("RESPONSE")));
+		}
+
 		private IChapServer CreateTestServer()
 		{
 			var responseService = Substitute.For<ISignatureService>();
-			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns("RESPONSE");
+			var signatureResult = new SignatureResult { SignatureHash = "RESPONSE" };
+			responseService.CreateSignature(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IEnumerable<SignatureFactor>>()).Returns(signatureResult);
 
-			return new ChapServer(responseService, new InMemoryChallengeStore());
+			return new ChapServer(responseService, new InMemoryChallengeStore(null));
 		}
 	}
 }

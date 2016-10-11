@@ -11,7 +11,13 @@ namespace MicroCHAP.Server
 	/// </summary>
 	public class InMemoryChallengeStore : IChallengeStore
 	{
+		private readonly IChallengeStoreLogger _logger;
 		private readonly ConcurrentDictionary<string, DateTime> _activeChallenges = new ConcurrentDictionary<string, DateTime>();
+
+		public InMemoryChallengeStore(IChallengeStoreLogger logger)
+		{
+			_logger = logger;
+		}
 
 		public void AddChallenge(string challenge, int expirationTimeInMsec)
 		{
@@ -25,7 +31,11 @@ namespace MicroCHAP.Server
 			DateTime existingChallengeTimestamp;
 
 			// note that we remove the challenge if it exists: you get one shot
-			if (!_activeChallenges.TryRemove(challenge, out existingChallengeTimestamp)) return false; // challenge was unknown
+			if (!_activeChallenges.TryRemove(challenge, out existingChallengeTimestamp))
+			{
+				_logger?.ChallengeUnknown(challenge);
+				return false; // challenge was unknown
+			}
 
 			// we know the token's timestamp was valid because we cleaned up expired tokens before getting it
 
@@ -39,7 +49,10 @@ namespace MicroCHAP.Server
 			{
 				DateTime temp;
 				if (DateTime.UtcNow > challenge.Value)
-					_activeChallenges.TryRemove(challenge.Key, out temp);
+				{
+					bool removed = _activeChallenges.TryRemove(challenge.Key, out temp);
+					if(removed) _logger.ChallengeExpired(challenge.Key);
+				}
 			}
 		}
 	}

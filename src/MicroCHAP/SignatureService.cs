@@ -15,7 +15,7 @@ namespace MicroCHAP
 			_sharedSecret = sharedSecret;
 		}
 
-		public string CreateSignature(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors)
+		public SignatureResult CreateSignature(string challenge, string url, IEnumerable<SignatureFactor> signatureFactors)
 		{
 			if (signatureFactors == null) signatureFactors = Enumerable.Empty<SignatureFactor>();
 
@@ -32,7 +32,11 @@ namespace MicroCHAP
 			using (SHA512 sha = new SHA512Managed())
 			{
 				var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(signature));
-				return Convert.ToBase64String(hash);
+				return new SignatureResult
+				{
+					SignatureHash = Convert.ToBase64String(hash),
+					SignatureSource = signature
+				};
 			}
 		}
 
